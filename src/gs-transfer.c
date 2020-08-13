@@ -414,13 +414,14 @@ do_server(void)
 	
 #if 1
 	GS_listen(gopt.gsocket, 1);
-	VOUT(1, "=Listening on Global Socket %s.gsocket\n", gopt.gs_addr.b58str);
+	VOUT(2, "=Global Socket %s.gsocket\n", gopt.gs_addr.b58str);
+	VOUT(1, "=Waiting for Sender...\n");
 
 	tcp_fd = GS_accept(gopt.gsocket);
 	if (tcp_fd < 0)
 		ERREXIT("GS_accept(): %s\n", GS_CTX_strerror(gopt.gsocket->ctx));
 	GS_close(gopt.gsocket);
-	VOUT(1, "=New Global Socket Connection\n");
+	VOUT(2, "=New Global Socket Connection\n");
 
 #else
 	int lsox;
@@ -583,7 +584,7 @@ server_recvfile(void)
 	ret = SSL_PKT_write(gopt.ssl, &pkt);
 	if (offset == 0xFFFFFFFFFFFFFFFF)
 	{
-		fprintf(stderr, "%s - Rejected...\n", fname);
+		fprintf(stderr, "%s - Rejected...\n", strlen(fname)?fname:"<STDOUT>");
 		return 0;	/* NEXT FILE */
 	}
 
@@ -809,12 +810,13 @@ do_client(void)
 
 	//GS_setsockopt(gopt.gsocket, GS_OPT_SOCKWAIT, NULL, 0);
 #if 1
-	VOUT(1, "=Connecting to Global Socket %s.gsocket\n", gopt.gs_addr.b58str);
+	VOUT(2, "=Global Socket %s.gsocket\n", gopt.gs_addr.b58str);
+	VOUT(1, "=Connecting...\n");
 	tcp_fd = GS_connect(gopt.gsocket);
 	if (tcp_fd < 0)
 		ERREXIT("GS_connect(): %s (Wrong Secret?)\n", GS_CTX_strerror(gopt.gsocket->ctx));
 	GS_close(gopt.gsocket);
-	VOUT(1, "=Global Socket Connection established\n");
+	VOUT(2, "=Global Socket Connection established\n");
 
 #else
 	// BIO *bio;
