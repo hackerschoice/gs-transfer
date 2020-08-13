@@ -18,7 +18,7 @@ An easy tool to securely transfer files between two computers behind NAT/Firewal
 **Installation**
 ```ShellSession
 $ git clone https://github.com/hackerschoice/gs-transfer.git
-$ cd gs-transfer && ./configure && make all
+$ cd gs-transfer && ./bootstrap && ./configure && make all
 ```
 
 **Usage**
