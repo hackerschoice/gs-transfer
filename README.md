@@ -14,6 +14,7 @@ A lightweight tool to securely transfer files between two distant computers thro
 - SRP Encryption is end-to-end (the GS-Net can not read the traffic).
 - No PKI required.
 - Uses 4096 Prime and AES-256 Bit encryption with SHA256.
+- Can be scripted.
 
 **Installation**
 ```ShellSession
@@ -32,6 +33,21 @@ Sender:
 ```ShellSession
 $ ./gs-transfer *.mp3 *.c
 ```
+
+**PRO TIPS**
+
+Use with 'tar' to transfer directories etc. 
+
+Receiver:
+```ShellSession
+$ ./gs-transfer -s <password> -O | tar xfz -
+```
+
+Sender:
+```ShellSession
+$ tar cfz - /home | ./gs-transfer -s <password>
+```
+
 
 
 **SHOUTZ**
