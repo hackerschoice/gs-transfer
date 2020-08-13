@@ -1,4 +1,4 @@
-# gs-transfer
+# Copy from anywhere to anywhere, securely.
 
 A lightweight tool to securely transfer files between two distant computers through any NAT/Firewall. It use the Global Socket Network to circumvent the NAT/Firewall. It uses SRP ([RFC 5054](https://tools.ietf.org/html/rfc5054)) with a 4096 Prime, AES-256 and SHA256 for Peer-to-Peer encryption, authentication and security.
 
