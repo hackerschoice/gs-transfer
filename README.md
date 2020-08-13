@@ -1,6 +1,6 @@
 # gs-transfer
 
-An easy tool to securely transfer files between two computers behind NAT/Firewall. It use the Global Socket Network to circumvent the NAT/Firewall and SRP ([RFC 5054](https://tools.ietf.org/html/rfc5054)) with a 4096 Prime, AES-256 and SHA256.
+A lightweight tool to securely transfer files between two distant computers through any NAT/Firewall. It use the Global Socket Network to circumvent the NAT/Firewall. It uses SRP ([RFC 5054](https://tools.ietf.org/html/rfc5054)) with a 4096 Prime, AES-256 and SHA256 for Peer-to-Peer encryption, authentication and security.
 
 ![alt text](https://github.com/hackerschoice/gs-transfer/blob/master/img/gst-ss.png?raw=true)
 
@@ -35,4 +35,5 @@ $ ./gs-transfer *.mp3 *.c
 
 
 **SHOUTZ**
-Thanks to g4- for testing. THIS IS ALPHA RELEASE. PLEASE TEST.
+
+Thanks to g4- and xaitax for testing. THIS IS ALPHA RELEASE. PLEASE TEST.
