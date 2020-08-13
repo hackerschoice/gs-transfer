@@ -97,9 +97,14 @@ static void
 setscreensize(void)
 {
     struct winsize winsize;
+    int ret;
 
-    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsize) != -1 &&
-        winsize.ws_col != 0) {
+    ret = ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsize);
+    /* Maybe STDOUT is redirected (-O). Try STDERR */
+    if (ret == -1)
+    	ret = ioctl(STDERR_FILENO, TIOCGWINSZ, &winsize);
+
+    if (ret != -1 && winsize.ws_col != 0) {
             if (winsize.ws_col > MAX_WINSIZE)
                     win_size = MAX_WINSIZE;
             else
@@ -126,10 +131,12 @@ DP_init(char *xfilename, FILE *out)
 	end_pos = 0;
 	cur_pos = 0;
 	last_usec = 0;
+	win_resized = 0;
 	fp = out;
 
 	setscreensize();
 
+	DEBUGF("win_size = %d\n", win_size);
 	snprintf(filename, sizeof filename, "%s", xfilename);
 	make_fname();
 

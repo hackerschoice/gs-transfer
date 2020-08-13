@@ -573,7 +573,7 @@ server_recvfile(void)
 			fp = fopen(fname, "a");
 			if (fp != NULL)
 			{
-				offset = fz;
+				offset = ftell(fp);
 			}	
 		}
 	}
