@@ -8,7 +8,7 @@
 
 #define MAX_WINSIZE		(512)
 #define DEFAULT_WINSIZE	(80)
-#define UPDATE_INTERVAL	(100 * 1000)	/* update every 100ms 		       */
+#define UPDATE_INTERVAL	(500 * 1000)	/* update every 100ms 		       */
 #define ALRM_UPD_INTERV	(1)				/* if we 'stall' in blocking write */
 #define STALL_TIME		(5 * 1000000)	/* Stalled this many seconds       */
 

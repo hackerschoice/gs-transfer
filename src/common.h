@@ -88,12 +88,20 @@ extern struct _gopt gopt;
 
 #define XFREE(ptr)  do{if(ptr) free(ptr); ptr = NULL;}while(0)
 
-#define ERREXIT(a...)   do { \
+#ifdef DEBUG
+# define ERREXIT(a...)   do { \
 		fprintf(stderr, "ERROR "); \
         fprintf(stderr, "%s():%d ", __func__, __LINE__); \
         fprintf(stderr, a); \
-        exit(-1); \
+        exit(255); \
 } while (0)
+#else
+# define ERREXIT(a...)   do { \
+		fprintf(stderr, "ERROR: "); \
+        fprintf(stderr, a); \
+        exit(255); \
+} while (0)
+#endif
 
 #ifndef XASSERT
 # define XASSERT(expr, a...) do { \

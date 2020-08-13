@@ -1147,7 +1147,7 @@ GS_ADDR_bin2addr(GS_ADDR *addr, const void *data, size_t len)
 	b58enc(b58, &b58sz, md, GS_ADDR_SIZE);
 	DEBUGF("b58 (%lu): %s\n", b58sz, b58);
 	addr->b58sz = b58sz;
-	strncpy(addr->b58str, b58, sizeof addr->b58str - 1);
+	snprintf(addr->b58str, sizeof addr->b58str, "%s", b58);
 
 	return addr;
 }

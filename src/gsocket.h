@@ -130,8 +130,8 @@ typedef struct
 	fd_set *wfd;
 	struct timeval tv_now;
 	int flags;
-	char err_buf[256];
-	char err_buf2[256];
+	char err_buf[1024];
+	char err_buf2[1024];
 } GS_CTX;
 
 #define GS_CTX_FL_RFD_INTERNAL		(0x01)	/* Use internal FD_SET */
@@ -172,7 +172,7 @@ struct gs_net
 typedef struct
 {
 	uint8_t addr[GS_ADDR_SIZE];
-	char b58str[GS_ADDR_B58_LEN + 1];		/* Base58 string representation of gs-address. 0-terminated. */
+	char b58str[GS_ADDR_B58_LEN + 1];		/* Base58 string representation of gs-address + \0-terminated. */
 	size_t b58sz;							/* Base58 size */
 } GS_ADDR;
 

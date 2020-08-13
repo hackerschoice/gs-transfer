@@ -414,7 +414,7 @@ do_server(void)
 	
 #if 1
 	GS_listen(gopt.gsocket, 1);
-	VOUT(1, "=Listening on Global Socket %s\n", gopt.gs_addr.b58str);
+	VOUT(1, "=Listening on Global Socket %s.gsocket\n", gopt.gs_addr.b58str);
 
 	tcp_fd = GS_accept(gopt.gsocket);
 	if (tcp_fd < 0)
@@ -549,17 +549,31 @@ server_recvfile(void)
 		DEBUGF("Filename: '%s'\n", fname);
 
 		/* See if file exists and is not a symbolic link */
-		fp = fopen(fname, "a");
-		if (fp != NULL)
+		int is_ok_file = 0;
+		struct stat res;
+		uint64_t fz = 0;
+		ret = lstat(fname, &res);
+		DEBUGF("lstat() = %d, %s\n", ret, strerror(errno));
+		if (ret != 0)
 		{
-			struct stat res;
-			ret = fstat(fileno(fp), &res);
-			if (ret == 0)
+			/* HERE: File/Symlink does not exit. Can create it */
+			is_ok_file = 1;		/* File/Symlink does not exist. Can create it */
+		} else {
+			/* HERE: File/symlink exists */
+			if (S_ISREG(res.st_mode))
 			{
-				if (S_ISREG(res.st_mode) && !S_ISLNK(res.st_mode))
-				{
-					offset = res.st_size;
-				}
+				is_ok_file = 1;
+				fz = res.st_size;
+			}
+		}
+
+		if (is_ok_file == 1)
+		{
+			/* HERE: Regular File. Not a symlink. Not a device */
+			fp = fopen(fname, "a");
+			if (fp != NULL)
+			{
+				offset = fz;
 			}	
 		}
 	}
@@ -567,6 +581,11 @@ server_recvfile(void)
 	DEBUGF("Accepting at offset %llx\n", offset);
 	pkt_build_accept(&pkt, offset);
 	ret = SSL_PKT_write(gopt.ssl, &pkt);
+	if (offset == 0xFFFFFFFFFFFFFFFF)
+	{
+		fprintf(stderr, "%s - Rejected...\n", fname);
+		return 0;	/* NEXT FILE */
+	}
 
 	ret = SSL_PKT_read(gopt.ssl, &pkt, GST_PKT_TYPE_DATA);
 	if (ret < 0)
@@ -640,8 +659,6 @@ client_sendfile(char *filename)
 	int ret;
 	char *fname = NULL;
 	int is_pipe = 0;
-	// uint8_t pkt_flags = 0;
-
 
 	/* Check if file exists and is a valid file. */
 	if (memcmp(filename, "-\000", 2) == 0)
@@ -665,6 +682,7 @@ client_sendfile(char *filename)
 			return 1;
 		}
 		if (S_ISREG(res.st_mode)) DEBUGF("REG\n");
+		if (S_ISLNK(res.st_mode)) DEBUGF("LNK\n");
 		if (S_ISCHR(res.st_mode)) DEBUGF("CHR\n");
 		if (S_ISBLK(res.st_mode)) DEBUGF("BLK\n");
 		if (S_ISFIFO(res.st_mode)) DEBUGF("FIFO\n");
@@ -791,7 +809,7 @@ do_client(void)
 
 	//GS_setsockopt(gopt.gsocket, GS_OPT_SOCKWAIT, NULL, 0);
 #if 1
-	VOUT(1, "=Connecting to Global Socket %s\n", gopt.gs_addr.b58str);
+	VOUT(1, "=Connecting to Global Socket %s.gsocket\n", gopt.gs_addr.b58str);
 	tcp_fd = GS_connect(gopt.gsocket);
 	if (tcp_fd < 0)
 		ERREXIT("GS_connect(): %s (Wrong Secret?)\n", GS_CTX_strerror(gopt.gsocket->ctx));
