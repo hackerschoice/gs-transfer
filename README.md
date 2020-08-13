@@ -45,7 +45,7 @@ $ ./gs-transfer -s <password> -O | tar xfz -
 
 Sender:
 ```ShellSession
-$ tar cfz - /home | ./gs-transfer -s <password>
+$ tar cfz - /home | ./gs-transfer -s <password> -
 ```
 
 
