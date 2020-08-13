@@ -84,6 +84,7 @@ extern struct _gopt gopt;
 	if (level > gopt.verboselevel) \
 		break; \
 	fprintf(gopt.out, a); \
+	fflush(gopt.out); \
 } while (0)
 
 #define XFREE(ptr)  do{if(ptr) free(ptr); ptr = NULL;}while(0)

@@ -415,12 +415,13 @@ do_server(void)
 #if 1
 	GS_listen(gopt.gsocket, 1);
 	VOUT(2, "=Global Socket %s.gsocket\n", gopt.gs_addr.b58str);
-	VOUT(1, "=Waiting for Sender...\n");
+	VOUT(1, "=Waiting for Sender...");
 
 	tcp_fd = GS_accept(gopt.gsocket);
 	if (tcp_fd < 0)
 		ERREXIT("GS_accept(): %s\n", GS_CTX_strerror(gopt.gsocket->ctx));
 	GS_close(gopt.gsocket);
+	VOUT(1, "Success!\n");
 	VOUT(2, "=New Global Socket Connection\n");
 
 #else
@@ -811,11 +812,12 @@ do_client(void)
 	//GS_setsockopt(gopt.gsocket, GS_OPT_SOCKWAIT, NULL, 0);
 #if 1
 	VOUT(2, "=Global Socket %s.gsocket\n", gopt.gs_addr.b58str);
-	VOUT(1, "=Connecting...\n");
+	VOUT(1, "=Connecting...");
 	tcp_fd = GS_connect(gopt.gsocket);
 	if (tcp_fd < 0)
 		ERREXIT("GS_connect(): %s (Wrong Secret?)\n", GS_CTX_strerror(gopt.gsocket->ctx));
 	GS_close(gopt.gsocket);
+	VOUT(1, "Success!\n");
 	VOUT(2, "=Global Socket Connection established\n");
 
 #else
@@ -847,7 +849,7 @@ do_client(void)
 	ret = SSL_connect(gopt.ssl);
 	DEBUGF("SSL_connect() = %d\n", ret);
 	XASSERT(ret == 1, "SSL_read() = SSL_%s\n%s\n", strsslerr(SSL_get_error(gopt.ssl, ret)), ERR_error_string(0, NULL));
-	VOUT(1, "=Encryption: %s (SRP Prime: %s bits)\n", GST_DFL_CIPHER, GST_DFL_STRENGTH);
+	VOUT(1, "=Encryption: %s (Prime: %s bits)\n", GST_DFL_CIPHER, GST_DFL_STRENGTH);
 
 	PKT_CTX pctx;
 	PKT_CTX_init(&pctx);
