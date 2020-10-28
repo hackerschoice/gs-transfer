@@ -1,5 +1,15 @@
 # Copy from anywhere to anywhere, securely.
 
+
+# THIS PROJECT IS NOW OBSOLETE AND HAS BEEN SUPERSEEDED BY GSOCKET
+# USE GSOCKET INSTEAD (gs-sftp, gs-mount or blitz).
+Get it here: [https://github.com/hackerschoice/gsocket](https://github.com/hackerschoice/gsocket)
+#
+
+#
+# OBSOLETE STUFF BELOW
+#
+
 A lightweight tool to securely transfer files between two distant computers through any NAT/Firewall. It use the Global Socket Network to circumvent the NAT/Firewall. It uses SRP ([RFC 5054](https://tools.ietf.org/html/rfc5054)) with a 4096 Prime, AES-256 and SHA256 for Peer-to-Peer encryption, authentication and security.
 
 ![alt text](https://github.com/hackerschoice/gs-transfer/blob/master/img/gst-ss.png?raw=true)
